@@ -12,6 +12,12 @@ struct _mf_midi_event_data_meta {
     uint8_t     *data;
 };
 
+typedef struct _mf_midi_event_data_sysex mf_midi_event_data_sysex;
+struct _mf_midi_event_data_sysex {
+    uint32_t    length;
+    uint8_t	*data;
+};
+
 typedef struct _mf_midi_event_data_basic mf_midi_event_data_basic;
 struct _mf_midi_event_data_basic {
     uint8_t     parm1;
