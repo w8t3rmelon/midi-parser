@@ -10,8 +10,8 @@ void mf_free_track(mf_midi_track *track) {
         if (tmp->cur_event.status == 0xff &&
             tmp->cur_event.data_meta.data != NULL) {
             free(tmp->cur_event.data_meta.data);
-	} else if (tmp->cur_event.status >= 0xf0 &&
-		   tmp->cur_event.status < 0xff &&
+	} else if ((tmp->cur_event.status == 0xf0 ||
+		   tmp->cur_event.status == 0xf7) &&
 		   tmp->cur_event.data_sysex.data != NULL) {
 	    free(tmp->cur_event.data_sysex.data);
 	}
