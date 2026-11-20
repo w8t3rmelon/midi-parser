@@ -8,14 +8,20 @@ void mf_free_track(mf_midi_track *track) {
         tmp = cur;
         cur = cur->next_event;
         if (tmp->cur_event.status == 0xff &&
-            tmp->cur_event.data_meta.data != NULL)
+            tmp->cur_event.data_meta.data != NULL) {
             free(tmp->cur_event.data_meta.data);
-        free(tmp);
+	} else if (tmp->cur_event.status >= 0xf0 &&
+		   tmp->cur_event.status < 0xff &&
+		   tmp->cur_event.data_sysex.data != NULL) {
+	    free(tmp->cur_event.data_sysex.data);
+	}
+	free(tmp);
     }
 }
 
 mf_midi_event_linked_list *mf_create_event_linked_list() {
     mf_midi_event_linked_list *list = malloc(sizeof(mf_midi_event_linked_list));
+
     if (list == NULL) return NULL;
     list->cur_event.delta = 0;
     list->cur_event.status = 0;
@@ -24,6 +30,8 @@ mf_midi_event_linked_list *mf_create_event_linked_list() {
     list->cur_event.data_meta.type = 0;
     list->cur_event.data_meta.length = 0;
     list->cur_event.data_meta.data = NULL;
+    list->cur_event.data_sysex.length = 0;
+    list->cur_event.data_sysex.data = NULL;
     list->next_event = NULL;
 
     return list;
