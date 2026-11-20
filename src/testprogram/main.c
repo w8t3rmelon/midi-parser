@@ -163,24 +163,24 @@ static void print_meta_data(mf_midi_event_data_meta data) {
         printf("(%d bytes)", data.length);
 }
 
-int main() {
+int main(void) {
     fill_meta_event_name_table();
     fill_cc_name_table();
 
     mf_midi_file *file = mf_create_from_file("test.mid");
     if (file == NULL) {
-	fprintf(stderr, "failed to open file\n");
+        fprintf(stderr, "failed to open file\n");
         return 1;
     }
 
     if (!mf_check_and_read_header(file)) {
-	fprintf(stderr, "failed to read header\n");
+	    fprintf(stderr, "failed to read header\n");
         mf_free(file);
         return 1;
     }
 
     if (!mf_read_all_tracks(file)) {
-	fprintf(stderr, "failed to read tracks\n");
+	    fprintf(stderr, "failed to read tracks\n");
         mf_free(file);
         return 1;
     }
@@ -189,38 +189,38 @@ int main() {
     printf("time division: %d ppq\n", file->time_division);
 
     for (int i = 0; i < file->nr_tracks; i++) {
-	mf_midi_track track = file->tracks[i];
-	printf("track %d:\n", i);
-	printf("\t%d bytes\n", track.byte_length);
-	printf("\t%zu events\n", track.nr_events);
+	    mf_midi_track track = file->tracks[i];
+	    printf("track %d:\n", i);
+	    printf("\t%d bytes\n", track.byte_length);
+	    printf("\t%zu events\n", track.nr_events);
 
-	for (mf_midi_event_linked_list *e = track.events; 
-	     e != NULL; e = e->next_event) {
-	     mf_midi_event event = e->cur_event;
+	    for (mf_midi_event_linked_list *e = track.events; 
+	         e != NULL; e = e->next_event) {
+            mf_midi_event event = e->cur_event;
 	     
-	     printf("\t");
-	     if (event.delta > 0) printf("(+%d tick(s)) ", event.delta);
-	     print_status_name(event.status);
-	     printf(": ");
+            printf("\t");
+            if (event.delta > 0) printf("(+%d tick(s)) ", event.delta);
+            print_status_name(event.status);
+            printf(": ");
 	     
-	     if (event.status >= 0x80 && event.status <= 0x9f)
-		     print_note_event_data(event.data_basic);
-	     else if (event.status >= 0xa0 && event.status <= 0xaf)
-		     print_key_pressure_data(event.data_basic);
-	     else if (event.status >= 0xb0 && event.status <= 0xbf)
-		     print_cc_data(event.data_basic);
-	     /* program change / aftertouch */
-	     else if (event.status >= 0xc0 && event.status <= 0xdf)
-		     print_1parm_data(event.data_basic);
-	     else if (event.status >= 0xe0 && event.status <= 0xef)
-		     print_pitch_bend_data(event.data_basic);
-	     else if (event.status == 0xf0 || event.status == 0xf9)
-		     printf("%d bytes", event.data_sysex.length);
-	     else if (event.status == 0xff)
-		     print_meta_data(event.data_meta);
+	        if (event.status >= 0x80 && event.status <= 0x9f)
+		        print_note_event_data(event.data_basic);
+	        else if (event.status >= 0xa0 && event.status <= 0xaf)
+		        print_key_pressure_data(event.data_basic);
+	        else if (event.status >= 0xb0 && event.status <= 0xbf)
+		        print_cc_data(event.data_basic);
+	        /* program change / aftertouch */
+	        else if (event.status >= 0xc0 && event.status <= 0xdf)
+		        print_1parm_data(event.data_basic);
+	        else if (event.status >= 0xe0 && event.status <= 0xef)
+		        print_pitch_bend_data(event.data_basic);
+	        else if (event.status == 0xf0 || event.status == 0xf9)
+		        printf("%d bytes", event.data_sysex.length);
+	        else if (event.status == 0xff)
+		        print_meta_data(event.data_meta);
 
-	     printf("\n");
-	}
+	        printf("\n");
+        }
     }
 
     mf_free(file);
