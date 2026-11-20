@@ -104,21 +104,21 @@ static bool mf_read_vlq(mf_midi_file *file) {
 /* reads sysex event data from the file (at file.buffer_offset) */
 static bool mf_read_sysex_event_data(mf_midi_file *file, mf_midi_event *event) {
     if (!mf_read_vlq(file)) {
-	    fprintf(stderr, "invalid vlq read\n");
-	    return false;
+        fprintf(stderr, "invalid vlq read\n");
+        return false;
     }
     event->data_sysex.length = file->_read_vlq;
     if (file->_read_vlq > 0) {
-	uint8_t *data = malloc(event->data_sysex.length);
+        uint8_t *data = malloc(event->data_sysex.length);
         if (data == NULL) {
-	    fprintf(stderr, "sysex event data allocation failure\n");
-	    return false;
-	}
-	memcpy(data, ((uint8_t *)(file->buffer + file->buffer_offset)),
-	       event->data_sysex.length);
-	event->data_sysex.data = data;
+            fprintf(stderr, "sysex event data allocation failure\n");
+            return false;
+        }
+        memcpy(data, ((uint8_t *)(file->buffer + file->buffer_offset)),
+               event->data_sysex.length);
+        event->data_sysex.data = data;
     } else {
-	    event->data_sysex.data = NULL;
+        event->data_sysex.data = NULL;
     }
 
     file->buffer_offset += event->data_sysex.length;
@@ -204,7 +204,7 @@ static bool mf_read_event(mf_midi_file *file, mf_midi_event *event) {
     if (event->status == 0xff) {
         return mf_read_meta_event_data(file, event);
     } else if (event->status == 0xf0 || event->status == 0xf7) {
-	return mf_read_sysex_event_data(file, event);
+        return mf_read_sysex_event_data(file, event);
     } else if (event->status >= 0x80) {
         return mf_read_basic_event_data(file, event);
     } else {
