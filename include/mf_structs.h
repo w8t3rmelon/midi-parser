@@ -31,6 +31,7 @@ struct _mf_midi_event {
 
     mf_midi_event_data_basic    data_basic;
     mf_midi_event_data_meta     data_meta;
+    mf_midi_event_data_sysex    data_sysex;
 };
 
 typedef struct _mf_midi_event_linked_list mf_midi_event_linked_list;
