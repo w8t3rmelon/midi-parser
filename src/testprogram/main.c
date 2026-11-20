@@ -128,7 +128,7 @@ static void print_status_name(uint8_t status) {
     else if (status == 0xff)
         printf("meta");
     else 
-         printf("unknown?");
+        printf("unknown?");
 }
 
 static void print_note_event_data(mf_midi_event_data_basic data) {
