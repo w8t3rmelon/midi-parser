@@ -1,6 +1,10 @@
 /* dumps information about tracks and its containing events to the terminal's
  * standard output. not all meta events will be fully decoded and sysex events
- * will only show their length, but is otherwise "functional enough" */
+ * will only show their length, but is otherwise "functional enough"
+ * 
+ * this requires a midi file named test.mid to be in the same working directory
+ * that the program is ran from (this is only really meant to be a test program
+ * so i haven't bothered reading from argv for a file path) */
 
 #include <mf_construct.h>
 #include <mf_parse.h>

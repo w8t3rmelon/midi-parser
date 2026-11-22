@@ -16,5 +16,5 @@ if(BUILD_TEST_PROGRAM)
     add_executable(midi-parser-testprogram
         src/testprogram/main.c)
     target_link_libraries(midi-parser-testprogram PRIVATE midi-parser)
-    configure_file(test.mid . COPYONLY)
+    #configure_file(test.mid . COPYONLY)
 endif()
